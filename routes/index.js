@@ -1,11 +1,17 @@
 const express = require('express');
 const passport = require('passport');
+const tokenModule = require('../common/token');
+
+const { setTokens, getAccessToken, getIdToken } = tokenModule();
+
 
 const router = express.Router();
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Authorization Code Flow', loggedIn: res.locals.loggedIn });
+  const accessToken = getAccessToken();
+  const idToken = getIdToken();
+  res.render('index', { title: 'Authorization Code Flow', loggedIn: res.locals.loggedIn, accessToken, idToken });
 });
 
 router.get('/login',
@@ -16,6 +22,7 @@ router.get('/login',
   });
 
 router.get('/logout', function(req, res) {
+  setTokens(null, null);
   req.logout();
   res.redirect('/');
 });
@@ -30,8 +37,9 @@ router.get('/callback',
 );
 
 router.get('/failure', function(req, res) {
-  var error = req.flash("error");
-  var error_description = req.flash("error_description");
+  const error = req.flash("error");
+  const error_description = req.flash("error_description");
+  setTokens(null, null);
   req.logout();
   res.render('failure', {
     error: error[0],

@@ -8,9 +8,12 @@ const passport = require('passport');
 const Auth0Strategy = require('passport-auth0');
 const session = require('express-session');
 const flash = require('connect-flash');
+const tokenModule = require('./common/token');
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
+
+const { setTokens } = tokenModule();
 
 dotenv.load();
 
@@ -27,6 +30,7 @@ const strategy = new Auth0Strategy(
     // accessToken is the token to call Auth0 API (not needed in the most cases)
     // extraParams.id_token has the JSON Web Token
     // profile has all the information from the user
+    setTokens(accessToken, extraParams['id_token']);
     return done(null, profile);
   }
 );
@@ -70,12 +74,9 @@ app.use(function(req, res, next) {
   next();
 });
 
-// Check logged in
+// Check logged in, set tokens
 app.use(function(req, res, next) {
-  res.locals.loggedIn = false;
-  if (req.session.passport && typeof req.session.passport.user != 'undefined') {
-    res.locals.loggedIn = true;
-  }
+  res.locals.loggedIn = req.session.passport && typeof req.session.passport.user !== 'undefined';
   next();
 });
 
