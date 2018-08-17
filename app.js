@@ -11,7 +11,7 @@ const flash = require('connect-flash');
 const tokenModule = require('./common/token');
 
 const indexRouter = require('./routes/index');
-const usersRouter = require('./routes/users');
+const userRouter = require('./routes/user');
 
 const { setTokens } = tokenModule();
 
@@ -82,7 +82,7 @@ app.use(function(req, res, next) {
 
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/user', userRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
