@@ -16,27 +16,10 @@
       </p>
     </div>
     <div class="col-sm-8 text-left">
-      <h1><%= title %></h1>
-      <h2>Todo</h2>
-      <ul>
-        <li>Change users to a page requiring login.</li>
-        <li>Test login failure</li>
-        <li>Best practice on Register link?</li>
-      </ul>
-      <hr>
-      <h2>Access Token</h2>
-      <p><%= accessToken %></p>
-      <h2>ID Token</h2>
-      <p><%= idToken %></p>
-      <hr>
-      <h2>Auth Errors</h2>
-      <p>Lorem ipsum...</p>
-      <% if (typeof message != "undefined") { %>
-      <hr>
-      <h2><%= message %></h2>
-      <h3><%= error.status %></h3>
-      <pre><%= error.stack %></pre>
-      <% } %>
+      <img src="<%= user.picture %>">
+      <p>Welcome <%= user.nickname %></p>
+      <h2>User Profile</h2>
+      <pre><%= userProfile %></pre>
     </div>
     <div class="col-sm-2 sidenav">
       <div class="well">
